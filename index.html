@@ -1,0 +1,103 @@
+<html>
+<head>
+  <title>Builder Pattern Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+        color:red;
+       }
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+    .output ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .output li {
+      font-size: 18px;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Builder Pattern Demo 🍔</h1>
+  <p><strong>Builder Pattern:</strong> Construct complex objects step by step.</p>
+
+  <!-- Ingredient Buttons -->
+  <button  onclick="addIngredient('🍞 Bun')">Add Bun</button>
+  <button onclick="addIngredient('🥩 Patty')">Add Patty</button>
+  <button onclick="addIngredient('🧀 Cheese')">Add Cheese</button>
+  <button onclick="addIngredient('🥬 Lettuce')">Add Lettuce</button>
+  <button onclick="finishBurger()">Finish Burger ✅</button>
+  <div class="output">
+    <h3>Your Final Burger:</h3>
+    <ul id="burgerList"></ul>
+  </div>
+  <script>
+    // Burger Builder Class
+    class BurgerBuilder {
+      constructor() 
+      {
+        this.ingredients = [];
+      }
+      addIngredient(ingredient) 
+      {
+        this.ingredients.push(ingredient);
+      }
+      getBurger() {
+        return this.ingredients;
+      }
+      reset()
+      {
+        this.ingredients = [];
+      }
+    }
+
+    // Initialize Builder
+    const builder = new BurgerBuilder();
+    const burgerList = document.getElementById('burgerList');
+
+    // Add ingredients to burger
+    function addIngredient(item) 
+    {
+      builder.addIngredient(item);
+     // alert('selected item: '+item);
+      displayBurger();
+    }
+    // Finish burger and check if it's ready
+    function finishBurger() 
+    {
+      const burger = builder.getBurger();
+      // Define minimum required ingredients
+      const requiredIngredients = ['🍞 Bun', '🥩 Patty'];
+      const hasRequiredIngredients = requiredIngredients.every(ingredient =>
+        burger.includes(ingredient));
+      if (hasRequiredIngredients && burger.length >= 4) 
+        alert('Burger is ready! 🍔');
+    else
+        alert('Burger is NOT ready! \nMake sure you have at least a Bun, Patty, and 4 ingredients total.');
+        displayBurger();
+    }
+    // Display burger in UI
+    function displayBurger() {
+      burgerList.innerHTML = '';
+      builder.getBurger().forEach(ingredient => {
+        const li = document.createElement('li');
+        li.textContent = ingredient;
+        burgerList.appendChild(li);
+      });
+    }
+  </script>
+</body></html>
